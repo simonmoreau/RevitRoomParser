@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="DBApplication">
+    <Name>RevitRoomParserBundle</Name>
+    <Assembly>.\RevitRoomParserBundle\RevitRoomParserBundle.dll</Assembly>
+    <AddInId>5b41a570-7afb-4a80-ac2e-46246b6da520</AddInId>
+    <FullClassName>RevitRoomParserBundle.RevitRoomParserBundleApp</FullClassName>
+    <Description>"Extract rooms to an open format"</Description>
+    <VendorId>BIM42</VendorId>
+    <VendorDescription>
+    </VendorDescription>
+  </AddIn>
+</RevitAddIns>
