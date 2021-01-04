@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   value = 'World';
-  isIframe = true;
+  isIframe = false;
   loggedIn = false;
 
   login() {
