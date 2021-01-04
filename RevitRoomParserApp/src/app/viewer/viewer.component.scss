@@ -1,0 +1,10 @@
+
+
+.svg-plan ::ng-deep svg path {
+    fill: gainsboro;
+    stroke: black;
+}
+
+.svg-plan ::ng-deep svg path:hover {
+    fill: red;
+}

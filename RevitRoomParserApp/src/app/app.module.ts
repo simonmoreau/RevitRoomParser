@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from "./app.component";
 import { HomeComponent } from './home/home.component';
 import { ViewerComponent } from './viewer/viewer.component';
+import { HttpClientModule } from "@angular/common/http";
+import { InlineSVGModule } from "ng-inline-svg";
 
 @NgModule({
   declarations: [
@@ -22,11 +24,13 @@ import { ViewerComponent } from './viewer/viewer.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FlexLayoutModule,
     AppRoutingModule,
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
+    InlineSVGModule.forRoot()
   ],
   bootstrap: [
     AppComponent
