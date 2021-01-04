@@ -1,1 +1,10 @@
-<div class="svg-plan" aria-label="My plan" [inlineSVG]="'/assets/rooms694.svg'" [removeSVGAttributes]="['fill','height','width']" [onSVGLoaded]="onLoadSVG"></div>
+<mat-form-field appearance="fill">
+    <mat-label>Select level</mat-label>
+    <mat-select [(value)]="selectedLevel">
+      <mat-option *ngFor="let level of levels" [value]="level">
+        {{level.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+<div class="svg-plan" aria-label="My plan" [inlineSVG]="selectedLevel.svg" [removeSVGAttributes]="['fill','height','width']" [onSVGLoaded]="onLoadSVG"></div>

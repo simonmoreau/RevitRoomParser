@@ -6,9 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./viewer.component.scss'],
 })
 export class ViewerComponent implements OnInit {
+
+  levels: ILevel[];
+  selectedLevel: ILevel;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+
+    this.levels = [
+      { name: 'Level 1', svg: '/assets/rooms311.svg' },
+      { name: 'Level 2', svg: '/assets/rooms694.svg' },
+      { name: 'Level 3', svg: '/assets/rooms136342.svg' },
+    ];
+
+    this.selectedLevel = this.levels[0];
+  }
 
   onLoadSVG(svg: SVGElement, parent: Element) {
     console.log(svg);
@@ -31,4 +44,14 @@ export class ViewerComponent implements OnInit {
   onClick(e: any, roomId: string) {
     console.log(roomId);
   }
+}
+
+interface Level
+{
+
+}
+
+interface ILevel {
+  name: string;
+  svg: string;
 }
