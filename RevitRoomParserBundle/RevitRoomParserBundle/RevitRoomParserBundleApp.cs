@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Svg;
+using Svg.Pathing;
 
 namespace RevitRoomParserBundle
 {
@@ -45,14 +46,10 @@ namespace RevitRoomParserBundle
                          .Cast<Autodesk.Revit.DB.Architecture.Room>()
                          .ToList();
 
+            Dictionary<ElementId, SvgDocument> svgDocumentsDictonary = BuildSvgDocumentsDictonary(doc);
+
             List<string> roomNames = new List<string>();
 
-            SvgDocument svgDoc = new SvgDocument
-            {
-                Width = 20,
-                Height = 20,
-                ViewBox = new SvgViewBox(-10, -10, 20, 20),
-            };
 
             BoundingBox boundingBox = new BoundingBox();
 
@@ -71,60 +68,90 @@ namespace RevitRoomParserBundle
                         continue;
                     }
 
-                    foreach (IList<Autodesk.Revit.DB.BoundarySegment> boundarySegArr in boundarySegmentArray)
+                    if (svgDocumentsDictonary.ContainsKey(room.Level.Id))
                     {
-                        if (0 == boundarySegArr.Count)
+                        SvgGroup svgGroup = new SvgGroup();
+                        svgGroup.CustomAttributes["roomId"] = room.Id.ToString();
+                        svgGroup.CustomAttributes["roomName"] = room.Name;
+
+                        svgDocumentsDictonary[room.Level.Id].Children.Add(svgGroup);
+
+                        foreach (IList<Autodesk.Revit.DB.BoundarySegment> boundarySegArr in boundarySegmentArray)
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
+                            if (0 == boundarySegArr.Count)
                             {
-                                //Check if the boundary is a room separation lines
-                                Element boundaryElement = doc.GetElement(boundarySegment.ElementId);
+                                continue;
+                            }
+                            else
+                            {
+                                List<Curve> curves = new List<Curve>();
 
-                                if (boundaryElement == null) { continue; }
-
-                                Categories categories = doc.Settings.Categories;
-                                Category RoomSeparetionLineCat = categories.get_Item(BuiltInCategory.OST_RoomSeparationLines);
-
-                                if (boundaryElement.Category.Id != RoomSeparetionLineCat.Id)
+                                foreach (Autodesk.Revit.DB.BoundarySegment boundarySegment in boundarySegArr)
                                 {
-
                                     Curve boundaryCurve = boundarySegment.GetCurve();
+                                    
 
                                     if (boundaryCurve != null)
                                     {
-                                        svgDoc.Children.Add(SvgConversion.ConvertCurve(boundaryCurve));
+                                        curves.Add(boundaryCurve);
+
                                         boundingBox.UpdateBox(boundaryCurve.GetEndPoint(0));
                                         boundingBox.UpdateBox(boundaryCurve.GetEndPoint(1));
-                                    }
 
+                                    }
                                 }
+
+                                svgGroup.Children.Add(SvgConversion.ConvertCurve(curves));
                             }
                         }
                     }
                 }
             }
 
-            svgDoc.Width = new SvgUnit((float)boundingBox.GetWidth());
-            svgDoc.Height = new SvgUnit((float)boundingBox.GetHeight());
-            svgDoc.ViewBox = new SvgViewBox((float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.GetWidth(), (float)boundingBox.GetHeight());
 
 
 
-            string path = @".\rooms.svg";
-            // File.WriteAllLines(path, roomNames.ToArray());
+            foreach (KeyValuePair<ElementId, SvgDocument> item in svgDocumentsDictonary)
+            {
+                item.Value.Width = new SvgUnit((float)boundingBox.GetWidth());
+                item.Value.Height = new SvgUnit((float)boundingBox.GetHeight());
+                item.Value.ViewBox = new SvgViewBox((float)boundingBox.minX, (float)boundingBox.minY, (float)boundingBox.GetWidth(), (float)boundingBox.GetHeight());
 
-            svgDoc.Write(path);
-
+                // string path = $".\rooms{}.svg";
+                string path = @".\rooms" + item.Key.ToString() + ".svg";
+                item.Value.Write(path);
+            }
 
             LogTrace("Rooms file saved in the working directory");
 
-
         }
 
+        private static Dictionary<ElementId, SvgDocument> BuildSvgDocumentsDictonary(Document doc)
+        {
+            Dictionary<ElementId, SvgDocument> svgDocumentsDictonary = new Dictionary<ElementId, SvgDocument>();
+
+            List<Autodesk.Revit.DB.Level> levels = new FilteredElementCollector(doc)
+             .OfCategory(BuiltInCategory.OST_Levels)
+             .WhereElementIsNotElementType()
+             .ToElements()
+             .Cast<Autodesk.Revit.DB.Level>()
+             .ToList();
+
+            foreach (Level level in levels)
+            {
+                svgDocumentsDictonary.Add(
+                    level.Id,
+                    new SvgDocument
+                    {
+                        Width = 20,
+                        Height = 20,
+                        ViewBox = new SvgViewBox(-10, -10, 20, 20),
+                    }
+                   );
+            }
+
+            return svgDocumentsDictonary;
+        }
         /// <summary>
         /// This will appear on the Design Automation output
         /// </summary>
@@ -156,19 +183,19 @@ namespace RevitRoomParserBundle
                 minX = point.X - margin;
             }
 
-            if(maxX < point.X)
+            if (maxX < point.X)
             {
                 maxX = point.X + margin;
             }
 
-            if (minY > point.Y)
+            if (minY > - point.Y)
             {
-                minY = point.Y - margin;
+                minY = - point.Y - margin;
             }
 
-            if(maxY < point.Y)
+            if (maxY < - point.Y)
             {
-                maxY = point.Y + margin;
+                maxY = - point.Y + margin;
             }
         }
 

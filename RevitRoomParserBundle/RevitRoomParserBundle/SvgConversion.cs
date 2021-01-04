@@ -32,6 +32,62 @@ namespace RevitRoomParserBundle
 
         }
 
+        public static SvgVisualElement ConvertCurve(List<Curve> curves)
+        {
+            SvgVisualElement svgVisualElement = null;
+
+            svgVisualElement = ConverPolyCurve(curves);
+
+            svgVisualElement.Stroke = new SvgColourServer(System.Drawing.Color.Black);
+            svgVisualElement.StrokeWidth = new SvgUnit((float)0.2);
+            svgVisualElement.Fill = SvgPaintServer.None;
+
+            return svgVisualElement;
+
+        }
+
+        private static SvgPath ConverPolyCurve(List<Curve> curves)
+        {
+            SvgPath svgPath = new SvgPath();
+
+            SvgPathSegmentList svgPathSegmentList = new SvgPathSegmentList();
+            svgPathSegmentList.Add(new SvgMoveToSegment(curves[0].GetEndPoint(0).ConvertToPointF()));
+
+            foreach (Curve curve in curves)
+            {
+                if (curve is Arc)
+                {
+                    Arc arc = (Arc)curve;
+
+                    XYZ a = arc.GetEndPoint(0) - arc.Center;
+                    XYZ b = arc.GetEndPoint(1) - arc.Center;
+
+                    double angleAboutAxis = a.AngleOnPlaneTo(b, arc.Normal);
+
+                    SvgArcSweep svgArcSweep = SvgArcSweep.Positive;
+
+                    if (angleAboutAxis >= 180) { svgArcSweep = SvgArcSweep.Negative; }
+
+                    SvgArcSize svgArcSize = SvgArcSize.Small;
+
+                    SvgArcSegment svgArcSegment = new SvgArcSegment(svgPathSegmentList.Last.End, (float)arc.Radius, (float)arc.Radius, (float)angleAboutAxis, svgArcSize, svgArcSweep, arc.GetEndPoint(1).ConvertToPointF());
+
+                    svgPathSegmentList.Add(svgArcSegment);
+                }
+                else if (curve is Line)
+                {
+                    SvgLineSegment svgLineSegment = new SvgLineSegment(svgPathSegmentList.Last.End, ((Line)curve).GetEndPoint(1).ConvertToPointF());
+
+                    svgPathSegmentList.Add(svgLineSegment);
+                }
+            }
+
+
+            svgPath.PathData = svgPathSegmentList;
+
+            return svgPath;
+        }
+
         private static SvgPath ConvertArc(Arc arc)
         {
 
