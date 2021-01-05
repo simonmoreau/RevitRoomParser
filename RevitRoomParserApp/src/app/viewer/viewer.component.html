@@ -1,4 +1,4 @@
-<div class="container">
+<div #container class="container">
 
   <mat-form-field appearance="fill">
     <mat-label>Select level</mat-label>
@@ -9,8 +9,8 @@
     </mat-select>
   </mat-form-field>
 
-<div class="svg-container"
-appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()" 
+<div 
+appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()" (wheelClickMove)="onClickWheelMove($event)" 
 class="svg-plan" aria-label="My plan" 
 [inlineSVG]="selectedLevel.svg" 
 [removeSVGAttributes]="['fill','height','width']"

@@ -1,5 +1,6 @@
 import { collectExternalReferences } from '@angular/compiler';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { stringify } from '@angular/compiler/src/util';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-viewer',
@@ -14,6 +15,8 @@ export class ViewerComponent implements OnInit {
   rooms: Room[] = [];
   private svgPlan: SVGElement;
 
+  @ViewChild('container') container : ElementRef;
+  
   constructor() {
     console.log(this.rooms);
   }
@@ -30,8 +33,8 @@ export class ViewerComponent implements OnInit {
 
   handleSVG(svg: SVGElement) {
 
-    svg.setAttribute('width', '100%');
-    svg.setAttribute('height', '100%');
+    svg.setAttribute('width', '1');
+    svg.setAttribute('height', '1');
 
     const paths = svg.querySelectorAll('path');
     paths.forEach((path, index) => {
@@ -46,17 +49,55 @@ export class ViewerComponent implements OnInit {
   }
 
   onMouseWheelUp() {
+    let x = Number(this.svgPlan.getAttribute('viewBox').split(', ')[2]);
+    let y = Number(this.svgPlan.getAttribute('viewBox').split(', ')[3]);
+
+    this.svgPlan.setAttribute('viewBox','-41.87434, -110.0051, '+ x*1.1 +', '+ y*1.1+'');
     console.log('test');
-    this.svgPlan.setAttribute('width','100');
+    //this.svgPlan.setAttribute('width','100');
   }
 
   onMouseWheelDown() {
+
+    let x = Number(this.svgPlan.getAttribute('viewBox').split(', ')[2]);
+    let y = Number(this.svgPlan.getAttribute('viewBox').split(', ')[3]);
+
+    this.svgPlan.setAttribute('viewBox','-41.87434, -110.0051, '+ x*0.9 +', '+ y*0.9+'');
     console.log('test2');
-    this.svgPlan.setAttribute('width','100');
+    // this.svgPlan.setAttribute('width','100');
+  }
+
+  onClickWheelMove(event: any) {
+    
+
+    let refX:number = (this.container.nativeElement as HTMLElement).offsetLeft;
+    let refY:number = (this.container.nativeElement as HTMLElement).offsetTop;
+
+    let deltaX = event.x;
+    let deltaY = event.y;
+
+    let x = Number(this.svgPlan.getAttribute('viewBox').split(', ')[0]);
+    let y = Number(this.svgPlan.getAttribute('viewBox').split(', ')[1]);
+
+    let width = Number(this.svgPlan.getAttribute('viewBox').split(', ')[2]);
+    let heigh = Number(this.svgPlan.getAttribute('viewBox').split(', ')[3]);
+
+    let viewbox: string = ((x - deltaX)*0.1).toString() +', '+ ((y - deltaY)*0.1).toString() +', '+ width +', '+ heigh
+    this.svgPlan.setAttribute('viewBox',viewbox);
+
+    console.log(event);
   }
 
   onSVGInserted(svg: SVGElement) {
     this.svgPlan = svg;
+    let width:number = (this.container.nativeElement as HTMLElement).offsetWidth;
+    let height:number = (this.container.nativeElement as HTMLElement).offsetHeight;
+
+    let size = width;
+
+    this.svgPlan.setAttribute('width',width.toString());
+    this.svgPlan.setAttribute('height',(height-100).toString());
+    
 
     const rooms = svg.querySelectorAll('g');
 

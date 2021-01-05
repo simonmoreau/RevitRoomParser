@@ -7,7 +7,7 @@ import { ViewerComponent } from './viewer/viewer.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: ViewerComponent
   },
   {
     path: 'viewer',
