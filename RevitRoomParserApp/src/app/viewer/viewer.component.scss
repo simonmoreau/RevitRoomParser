@@ -1,10 +1,27 @@
 
 
 .svg-plan ::ng-deep svg path {
-    fill: var(--color-grey);
     stroke: black;
 }
 
-.svg-plan ::ng-deep svg path:hover {
+.svg-plan ::ng-deep svg path.room:hover {
+    fill: var(--color-grey-dark);
+}
+
+.svg-plan ::ng-deep svg path.room {
+    fill: var(--color-grey);
+}
+
+.svg-plan ::ng-deep svg path.selectedRoom:hover {
+    fill: var(--color-warn-dark);
+}
+
+.svg-plan ::ng-deep svg path.selectedRoom {
     fill: var(--color-warn);
+}
+
+.test{
+    height: 300px;
+    width: 300px;
+    background-color: blue;
 }
