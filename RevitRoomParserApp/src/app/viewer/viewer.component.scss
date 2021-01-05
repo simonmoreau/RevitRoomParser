@@ -1,0 +1,10 @@
+
+
+.svg-plan ::ng-deep svg path {
+    fill: var(--color-grey);
+    stroke: black;
+}
+
+.svg-plan ::ng-deep svg path:hover {
+    fill: var(--color-warn);
+}
