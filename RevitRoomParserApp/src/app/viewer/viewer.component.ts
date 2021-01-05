@@ -12,6 +12,7 @@ export class ViewerComponent implements OnInit {
   selection: string[];
   selectedRoom: Room[] = [];
   rooms: Room[] = [];
+  private svgPlan: SVGElement;
 
   constructor() {
     console.log(this.rooms);
@@ -28,6 +29,10 @@ export class ViewerComponent implements OnInit {
   }
 
   handleSVG(svg: SVGElement) {
+
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '100%');
+
     const paths = svg.querySelectorAll('path');
     paths.forEach((path, index) => {
       path.removeAttribute('style');
@@ -40,8 +45,19 @@ export class ViewerComponent implements OnInit {
     return svg;
   }
 
+  onMouseWheelUp() {
+    console.log('test');
+    this.svgPlan.setAttribute('width','100');
+  }
+
+  onMouseWheelDown() {
+    console.log('test2');
+    this.svgPlan.setAttribute('width','100');
+  }
+
   onSVGInserted(svg: SVGElement) {
-    console.log(svg);
+    this.svgPlan = svg;
+
     const rooms = svg.querySelectorAll('g');
 
     rooms.forEach((room, index) => {

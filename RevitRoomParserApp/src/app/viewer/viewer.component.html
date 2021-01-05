@@ -1,4 +1,6 @@
-<mat-form-field appearance="fill">
+<div class="container">
+
+  <mat-form-field appearance="fill">
     <mat-label>Select level</mat-label>
     <mat-select [(value)]="selectedLevel">
       <mat-option *ngFor="let level of levels" [value]="level">
@@ -7,4 +9,13 @@
     </mat-select>
   </mat-form-field>
 
-<div class="svg-plan" aria-label="My plan" [inlineSVG]="selectedLevel.svg" [removeSVGAttributes]="['fill','height','width']" [onSVGLoaded]="handleSVG" (onSVGInserted)="onSVGInserted($event)"></div>
+<div class="svg-container"
+appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()" 
+class="svg-plan" aria-label="My plan" 
+[inlineSVG]="selectedLevel.svg" 
+[removeSVGAttributes]="['fill','height','width']"
+[onSVGLoaded]="handleSVG" 
+(onSVGInserted)="onSVGInserted($event)">
+</div>
+</div>
+

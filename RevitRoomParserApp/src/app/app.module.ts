@@ -15,12 +15,14 @@ import { HomeComponent } from './home/home.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { HttpClientModule } from "@angular/common/http";
 import { InlineSVGModule } from "ng-inline-svg";
+import { MouseWheelDirective } from './directives/mouse-wheel.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ViewerComponent
+    ViewerComponent,
+    MouseWheelDirective
   ],
   imports: [
     BrowserModule,
