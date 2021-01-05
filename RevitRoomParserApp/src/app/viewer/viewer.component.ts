@@ -1,3 +1,4 @@
+import { collectExternalReferences } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,10 +10,15 @@ export class ViewerComponent implements OnInit {
 
   levels: ILevel[];
   selectedLevel: ILevel;
-  constructor() {}
+  selection: string[];
+  selectedRoom: Room;
+  rooms: Room[] = [];
+
+  constructor() {
+    console.log(this.rooms);
+  }
 
   ngOnInit(): void {
-
 
     this.levels = [
       { name: 'Level 1', svg: '/assets/rooms311.svg' },
@@ -23,15 +29,18 @@ export class ViewerComponent implements OnInit {
     this.selectedLevel = this.levels[0];
   }
 
-  onLoadSVG(svg: SVGElement, parent: Element) {
+  onLoadSVG(svg: SVGElement, parent: Element): SVGElement {
+
     console.log(svg);
-    const component = this;
+    console.log(this.rooms);
+
     const rooms = svg.querySelectorAll("g");
+
     rooms.forEach((room, index) => {
-      const roomId = room.getAttribute('roomid');
       console.log(`path:${index} , roomId=${room.getAttribute('roomid')}`);
-      room.onclick = (e:any) => {console.log(roomId);}
-      // room.addEventListener('click', this.onClick.bind(this));
+
+      const r = new Room(room)
+
       const paths = room.querySelectorAll("path");
       paths.forEach((path, index) => {
         path.removeAttribute('style');
@@ -40,18 +49,26 @@ export class ViewerComponent implements OnInit {
     });
     return svg;
   }
-
-  onClick(e: any, roomId: string) {
-    console.log(roomId);
-  }
-}
-
-interface Level
-{
-
 }
 
 interface ILevel {
   name: string;
   svg: string;
+}
+
+class Room {
+  name: string;
+  id: string;
+  svg: SVGGElement;
+
+  constructor(svg: SVGGElement) {
+    this.name = svg.getAttribute('roomname');
+    this.id = svg.getAttribute('roomid');
+    this.svg = svg;
+    this.svg.onclick = this.onRoomClick;
+  }
+
+  onRoomClick = (e:any) => {
+    console.log(this.name + '-' + this.id);
+  }
 }
