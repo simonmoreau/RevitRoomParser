@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "repositoryToken": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/cab87219-f718-41a8-aebf-03a4d79cfb15/resourceGroups/GeneralRessources/providers/Microsoft.KeyVault/vaults/bim42mailkeyvault"
+                },
+                "secretName": "GithubRepositoryToken"
+            }
+        },
+        "RevitRoomParserForgeClientID": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/cab87219-f718-41a8-aebf-03a4d79cfb15/resourceGroups/GeneralRessources/providers/Microsoft.KeyVault/vaults/bim42mailkeyvault"
+                },
+                "secretName": "RevitToIFCForgeClientID"
+            }
+        },
+        "RevitRoomParserForgeSecret": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/cab87219-f718-41a8-aebf-03a4d79cfb15/resourceGroups/GeneralRessources/providers/Microsoft.KeyVault/vaults/bim42mailkeyvault"
+                },
+                "secretName": "RevitToIFCForgeSecret"
+            }
+        },
+        "appLocation": {
+            "value": "RevitRoomParserApp"
+        },
+        "repositoryUrl": {
+            "value": "https://github.com/simonmoreau/RevitRoomParser"
+        },
+        "appName": {
+            "value": "RevitRoomParser"
+        },
+        "apiLocation": {
+            "value": ""
+        },
+        "appArtifactLocation": {
+            "value": "dist/angular-basic"
+        }
+    }
+}
