@@ -17,9 +17,7 @@ export class ViewerComponent implements OnInit {
 
   @ViewChild('container') container : ElementRef;
   
-  constructor() {
-    console.log(this.rooms);
-  }
+  constructor() {  }
 
   ngOnInit(): void {
     this.levels = [
@@ -40,9 +38,6 @@ export class ViewerComponent implements OnInit {
     paths.forEach((path, index) => {
       path.removeAttribute('style');
       path.setAttribute('class','room')
-      // path.removeAttribute('stroke-width');
-      // console.log(path);
-      // '[ngStyle]','myStyles'
     });
 
     return svg;
@@ -53,7 +48,6 @@ export class ViewerComponent implements OnInit {
     let y = Number(this.svgPlan.getAttribute('viewBox').split(', ')[3]);
 
     this.svgPlan.setAttribute('viewBox','-41.87434, -110.0051, '+ x*1.1 +', '+ y*1.1+'');
-    console.log('test');
     //this.svgPlan.setAttribute('width','100');
   }
 
@@ -63,7 +57,7 @@ export class ViewerComponent implements OnInit {
     let y = Number(this.svgPlan.getAttribute('viewBox').split(', ')[3]);
 
     this.svgPlan.setAttribute('viewBox','-41.87434, -110.0051, '+ x*0.9 +', '+ y*0.9+'');
-    console.log('test2');
+
     // this.svgPlan.setAttribute('width','100');
   }
 
@@ -85,7 +79,6 @@ export class ViewerComponent implements OnInit {
     let viewbox: string = ((x - deltaX)*0.1).toString() +', '+ ((y - deltaY)*0.1).toString() +', '+ width +', '+ heigh
     this.svgPlan.setAttribute('viewBox',viewbox);
 
-    console.log(event);
   }
 
   onSVGInserted(svg: SVGElement) {
@@ -102,16 +95,11 @@ export class ViewerComponent implements OnInit {
     const rooms = svg.querySelectorAll('g');
 
     rooms.forEach((room, index) => {
-      console.log(`path:${index} , roomId=${room.getAttribute('roomid')}`);
+      // console.log(`path:${index} , roomId=${room.getAttribute('roomid')}`);
 
       const r = new Room(room, this.selectedRooms);
       this.rooms.push(r);
 
-      // const paths = room.querySelectorAll("path");
-      // paths.forEach((path, index) => {
-      //   path.removeAttribute('style');
-      // });
-      // room.setAttribute('style', 'fill:red;fill-opacity:1;stroke:black;');
     });
   }
 }
@@ -136,7 +124,6 @@ class Room {
   }
 
   onRoomClick = (e: any) => {
-    console.log(this.name + '-' + this.id);
 
     if (this.selectedRooms.indexOf(this) > -1) {
       // Remove from the list
