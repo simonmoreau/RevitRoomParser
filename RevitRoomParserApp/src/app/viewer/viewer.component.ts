@@ -11,7 +11,7 @@ export class ViewerComponent implements OnInit {
   levels: ILevel[];
   selectedLevel: ILevel;
   selection: string[];
-  selectedRoom: Room[] = [];
+  selectedRooms: Room[] = [];
   rooms: Room[] = [];
   private svgPlan: SVGElement;
 
@@ -104,7 +104,7 @@ export class ViewerComponent implements OnInit {
     rooms.forEach((room, index) => {
       console.log(`path:${index} , roomId=${room.getAttribute('roomid')}`);
 
-      const r = new Room(room, this.selectedRoom);
+      const r = new Room(room, this.selectedRooms);
       this.rooms.push(r);
 
       // const paths = room.querySelectorAll("path");
@@ -125,24 +125,24 @@ class Room {
   name: string;
   id: string;
   svg: SVGGElement;
-  selectedRoom: Room[];
+  selectedRooms: Room[];
 
-  constructor(svg: SVGGElement, selectedRoom: Room[]) {
+  constructor(svg: SVGGElement, selectedRooms: Room[]) {
     this.name = svg.getAttribute('roomname');
     this.id = svg.getAttribute('roomid');
     this.svg = svg;
     this.svg.onclick = this.onRoomClick;
-    this.selectedRoom = selectedRoom;
+    this.selectedRooms = selectedRooms;
   }
 
   onRoomClick = (e: any) => {
     console.log(this.name + '-' + this.id);
 
-    if (this.selectedRoom.indexOf(this) > -1) {
+    if (this.selectedRooms.indexOf(this) > -1) {
       // Remove from the list
-      const index = this.selectedRoom.indexOf(this, 0);
+      const index = this.selectedRooms.indexOf(this, 0);
       if (index > -1) {
-        this.selectedRoom.splice(index, 1);
+        this.selectedRooms.splice(index, 1);
       }
 
       const paths = this.svg.querySelectorAll('path');
@@ -151,7 +151,7 @@ class Room {
       });
     } else {
       // Add to the list
-      this.selectedRoom.push(this);
+      this.selectedRooms.push(this);
 
       const paths = this.svg.querySelectorAll('path');
       paths.forEach((path, index) => {

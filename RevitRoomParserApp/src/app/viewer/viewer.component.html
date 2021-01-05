@@ -1,13 +1,18 @@
 <div #container class="container">
 
-  <mat-form-field appearance="fill">
-    <mat-label>Select level</mat-label>
-    <mat-select [(value)]="selectedLevel">
-      <mat-option *ngFor="let level of levels" [value]="level">
-        {{level.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign=" center" >
+    <mat-form-field appearance="fill">
+      <mat-label>Select level</mat-label>
+      <mat-select [(value)]="selectedLevel">
+        <mat-option *ngFor="let level of levels" [value]="level">
+          {{level.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>You have selected {{selectedRooms.length}} rooms.</p>
+    <p *ngIf="selectedRooms.length > 0">{{selectedRooms[0].name}} - {{selectedRooms[0].id}}.</p>
+  </div>
+
 
 <div 
 appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()" (wheelClickMove)="onClickWheelMove($event)" 
