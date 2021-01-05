@@ -132,6 +132,8 @@ $typography: mat-typography-config(
  :root {
   --color-primary: #{mat-color($app-primary)};
   --color-accent: #{mat-color($app-accent)};
-  --color-warn: #{mat-color($app-warn)};
+  --color-warn: #{mat-color($md-red,500)};
+  --color-warn-dark: #{mat-color($md-red,900)};
   --color-grey: #{mat-color($md-blue, 50)};
+  --color-grey-dark: #{mat-color($md-blue, 100)};
 }
