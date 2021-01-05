@@ -89,7 +89,7 @@ export class ViewerComponent implements OnInit {
     let size = width;
 
     this.svgPlan.setAttribute('width',width.toString());
-    this.svgPlan.setAttribute('height',(height-100).toString());
+    this.svgPlan.setAttribute('height',(height-3).toString());
     
 
     const rooms = svg.querySelectorAll('g');

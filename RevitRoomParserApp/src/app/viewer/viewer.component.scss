@@ -1,4 +1,6 @@
-
+.svg-plan {
+    height: 100%;
+}
 
 .svg-plan ::ng-deep svg path {
     stroke: black;
@@ -22,4 +24,10 @@
 
 .container {
     height: 100%;
+}
+
+.controls-container {
+    position: absolute;
+    margin-top: 20px;
+    margin-right: 0px;
 }

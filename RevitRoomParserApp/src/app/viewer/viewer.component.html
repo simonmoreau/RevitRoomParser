@@ -1,26 +1,29 @@
 <div #container class="container">
 
-  <div fxLayout="row" fxLayoutAlign=" center" >
-    <mat-form-field appearance="fill">
-      <mat-label>Select level</mat-label>
-      <mat-select [(value)]="selectedLevel">
-        <mat-option *ngFor="let level of levels" [value]="level">
-          {{level.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="controls-container">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Select level</mat-label>
+        <mat-select [(value)]="selectedLevel">
+          <mat-option *ngFor="let level of levels" [value]="level">
+            {{level.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <p>You have selected {{selectedRooms.length}} rooms.</p>
-    <p *ngIf="selectedRooms.length > 0">{{selectedRooms[0].name}} - {{selectedRooms[0].id}}.</p>
+    <mat-divider *ngIf="selectedRooms.length > 0"></mat-divider>
+    <div>
+      <mat-list role="list" *ngFor="let room of selectedRooms">
+        <mat-list-item role="listitem">{{room.name}} - {{room.id}}</mat-list-item>
+       </mat-list>
+    </div>
+
   </div>
 
 
-<div 
-appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()" (wheelClickMove)="onClickWheelMove($event)" 
-class="svg-plan" aria-label="My plan" 
-[inlineSVG]="selectedLevel.svg" 
-[removeSVGAttributes]="['fill','height','width']"
-[onSVGLoaded]="handleSVG" 
-(onSVGInserted)="onSVGInserted($event)">
+  <div appMouseWheel (mouseWheelUp)="onMouseWheelUp()" (mouseWheelDown)="onMouseWheelDown()"
+    (wheelClickMove)="onClickWheelMove($event)" class="svg-plan" aria-label="My plan" [inlineSVG]="selectedLevel.svg"
+    [removeSVGAttributes]="['fill','height','width']" [onSVGLoaded]="handleSVG" (onSVGInserted)="onSVGInserted($event)">
+  </div>
 </div>
-</div>
-
